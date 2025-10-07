@@ -16,5 +16,5 @@ class FragmentTareas : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_tareas, container, false)
     }
-    // Implementación futura: observar LiveData y actualizar UI
+
 }

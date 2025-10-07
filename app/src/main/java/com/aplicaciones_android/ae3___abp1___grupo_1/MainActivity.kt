@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-        // Mostrar por defecto las tareas pendientes
         bottomNav.selectedItemId = R.id.nav_pendientes
     }
 
