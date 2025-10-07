@@ -3,18 +3,17 @@ package com.aplicaciones_android.ae3___abp1___grupo_1
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ListView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.Observer
-import com.aplicaciones_android.ae3___abp1___grupo_1.ui.TareaAdapter
+import androidx.fragment.app.Fragment
+import com.aplicaciones_android.ae3___abp1___grupo_1.ui.TareasPendientesFragment
+import com.aplicaciones_android.ae3___abp1___grupo_1.ui.TareasCompletadasFragment
 import com.aplicaciones_android.ae3___abp1___grupo_1.viewmodel.TareaViewModel
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var adapter: TareaAdapter
     private val tareaViewModel: TareaViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,23 +26,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        adapter = TareaAdapter(mutableListOf(),
-            onEliminar = { posicion ->
-                tareaViewModel.eliminarTarea(posicion)
-            },
-            onCompletar = { posicion, completada ->
-                tareaViewModel.completarTarea(posicion, completada)
-            }
-        )
-
-        val listView = findViewById<ListView>(R.id.listViewTareas)
-        listView.adapter = adapter
-
-        // Observa los cambios en la lista de tareas y actualiza el adaptador
-        tareaViewModel.tareas.observe(this, Observer { lista ->
-            adapter.setTareas(lista)
-        })
-
+        // Agregar tarea
         val editTextTarea = findViewById<EditText>(R.id.editTextTarea)
         val buttonAgregar = findViewById<Button>(R.id.buttonAgregarTarea)
         buttonAgregar.setOnClickListener {
@@ -54,5 +37,28 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Navegación entre fragments
+        val bottomNav = findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_pendientes -> {
+                    showFragment(TareasPendientesFragment())
+                    true
+                }
+                R.id.nav_completadas -> {
+                    showFragment(TareasCompletadasFragment())
+                    true
+                }
+                else -> false
+            }
+        }
+        // Mostrar por defecto las tareas pendientes
+        bottomNav.selectedItemId = R.id.nav_pendientes
+    }
+
+    private fun showFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .commit()
     }
 }

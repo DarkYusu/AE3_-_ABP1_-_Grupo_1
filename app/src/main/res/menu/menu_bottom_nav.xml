@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_pendientes"
+        android:title="Pendientes"
+        android:icon="@android:drawable/ic_menu_agenda" />
+    <item
+        android:id="@+id/nav_completadas"
+        android:title="Completadas"
+        android:icon="@android:drawable/ic_menu_my_calendar" />
+</menu>
+
